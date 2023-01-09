@@ -13,8 +13,8 @@ data["moyenne"] = y.between(0.33, 0.66, inclusive="right")
 data["faible"] = y<= 0.33
 y = data[["haute","moyenne", "faible"]]
 
-X_train,X_test = np.array(X[:300]).T,np.array(X[300:]).T
-Y_train,Y_test = np.array(y[:300]).T,np.array(y[300:]).T
+X_train,X_test = np.array(X[:200]).T,np.array(X[200:]).T
+Y_train,Y_test = np.array(y[:200]).T,np.array(y[200:]).T
 
 
 
@@ -81,14 +81,6 @@ def forward_propagation(x, parameters):
     return forward_cache
 
 
-def cost_function(a2, y):
-    m = y.shape[1]
-
-    cost = -(1 / m) * np.sum(y * np.log(a2))
-
-    # cost = -(1/m)*np.sum(np.sum(y*np.log(a2, 0), 1))
-
-    return cost
 
 
 def backward_prop(x, y, parameters, forward_cache):
@@ -118,6 +110,16 @@ def backward_prop(x, y, parameters, forward_cache):
     }
 
     return gradients
+
+def cost_function(a2, y):
+    m = y.shape[1]
+
+    cost = -(1 / m) * np.sum(y * np.log(a2))
+
+    # cost = -(1/m)*np.sum(np.sum(y*np.log(a2, 0), 1))
+
+    return cost
+
 
 
 def update_parameters(parameters, gradients, learning_rate):
@@ -193,6 +195,17 @@ def accuracy(inp, labels, parameters):
 
     return acc
 
+def predict(x, y, parameters, activation ):
+    m = x.shape[1]
+    y_pred, forward_cache = forward_propagation(x, parameters, activation)
+
+    if y.shape[0] == 1:
+        y_pred = np.array(y_pred > 0.5, dtype='float')
+    else:
+        y = np.argmax(y_pred, 0)
+        y_pred = np.argmax(y_pred, 0)
+
+    return np.round(np.sum((y_pred == y)/m), 2)
 
 print("Accuracy of Train Dataset", accuracy(X_train, Y_train, Parameters), "%")
 print("Accuracy of Test Dataset", round(accuracy(X_test, Y_test, Parameters), 2), "%")
