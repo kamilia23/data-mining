@@ -119,7 +119,7 @@ def cost_function(a2, y):
     # cost = -(1/m)*np.sum(np.sum(y*np.log(a2, 0), 1))
 
     return cost
-
+#les mises a jour
 
 def update_parameters(parameters, gradients, learning_rate):
     w1 = parameters['w1']
@@ -195,7 +195,8 @@ def accuracy(inp, labels, parameters):
 
     return acc
 
-#la prediction en cours 
+#la prediction en cours
+
 def predict(x, y, parameters):
     m = x.shape[1]
     y_pred, forward_cache = forward_propagation(x, parameters)
